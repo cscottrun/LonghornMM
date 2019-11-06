@@ -8,4 +8,5 @@ To use this demo,
 * cd into directory
 * type `pipenv install`
 * type `pipenv run jupyter notebook`  
-Jupyter notebook will open in your browser. From here you may open the demo.ipynb and execute demo
+
+Jupyter notebook will open in your browser. From here you may open the Demo.ipynb and execute demo
