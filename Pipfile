@@ -13,8 +13,6 @@ matplotlib = "*"
 plotly = "*"
 cufflinks = "*"
 seaborn = "*"
-xlsxwriter = "*"
-openpyxl = "*"
 
 [requires]
 python_version = "3.7"
