@@ -11,7 +11,7 @@ from pandas import ExcelFile
 from pandas import ExcelWriter
 
 # read in full export
-export = pd.read_csv(f'{download_folder}orders_export.csv')
+export = pd.read_csv(f'{download_folder}orders_export.csv', dtype={'Phone':str })
 
 # convert 'created at' to timestamp called 'date ordered'
 timestamps = pd.to_datetime(export['Created at'])
@@ -42,7 +42,12 @@ to_make = orders['Lineitem name'].value_counts()
 to_make = to_make.reset_index().rename(columns={'index': 'Lineitem name', 'Lineitem name': 'Count'})
 
 # Create dataframe for instore pickups
-pick_ups = orders[orders['Shipping Method'].str.contains('in-store')][['Date Ordered','Billing Name','Lineitem name','Shipping Method']]
+pick_ups = orders[orders['Shipping Method'].str.contains('in-store')][['Date Ordered',
+                                                                      'Billing Name',
+                                                                      'Lineitem name',
+                                                                      'Shipping Method',
+                                                                      'Email',
+                                                                      'Phone' ]]
 
 # Create dataframe for deliveries
 deliveries = orders[orders['Shipping Method'].str.contains('Delivery')][['Date Ordered',
