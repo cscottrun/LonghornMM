@@ -37,6 +37,9 @@ orders = orders.fillna(method='ffill')
 # Filter out pre-orders
 orders = orders[~orders['Lineitem name'].str.contains('pre-order')]
 
+# Shorten description for instore-pickup
+orders.loc[orders['Shipping Method'].str.contains('in-store'),['Shipping Method']]= 'in-store pickup'
+
 # Create dataframe for cutters
 to_make = orders['Lineitem name'].value_counts()
 to_make = to_make.reset_index().rename(columns={'index': 'Lineitem name', 'Lineitem name': 'Count'})
