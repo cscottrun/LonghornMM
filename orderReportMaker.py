@@ -37,6 +37,9 @@ orders = orders.fillna(method='ffill')
 # Filter out pre-orders
 orders = orders[~orders['Lineitem name'].str.contains('pre-order')]
 
+# Filter out fulfilled
+orders = orders[orders['Fulfillment Status'].str.contains('unfulfilled')]
+
 # Shorten description for instore-pickup
 orders.loc[orders['Shipping Method'].str.contains('in-store'),['Shipping Method']]= 'in-store pickup'
 
