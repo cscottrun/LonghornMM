@@ -44,8 +44,10 @@ orders = orders[orders['Fulfillment Status'].str.contains('unfulfilled')]
 orders.loc[orders['Shipping Method'].str.contains('in-store'),['Shipping Method']]= 'in-store pickup'
 
 # Create dataframe for cutters
-to_make = orders['Lineitem name'].value_counts()
-to_make = to_make.reset_index().rename(columns={'index': 'Lineitem name', 'Lineitem name': 'Count'})
+to_make = orders.copy()
+to_make.loc[to_make['Shipping Method'].str.contains('Delivery|in-store'), 'Shipping Method'] = 'Delivery/in-store'
+to_make = to_make[['Lineitem name','Name', 'Shipping Method']]
+to_make = pd.pivot_table(to_make, index=['Lineitem name', 'Shipping Method'], aggfunc='count')
 
 # Create dataframe for instore pickups
 pick_ups = orders[orders['Shipping Method'].str.contains('in-store')][['Date Ordered',
@@ -80,7 +82,7 @@ to_ship = orders[orders['Shipping Method'].str.contains('UPS')][['Date Ordered',
 
 # Print all dataframes to excel
 with pd.ExcelWriter(f'{download_folder}Online Order Reports-{today_string}.xlsx') as writer:
-    to_make.to_excel(writer, sheet_name='To Make', index=False)
+    to_make.to_excel(writer, sheet_name='To Make', index=True)
     pick_ups.to_excel(writer, sheet_name='Pick Ups', index=False)
     deliveries.to_excel(writer,sheet_name='Deliveries', index=False)
     to_ship.to_excel(writer, sheet_name='To Ship', index=False)
